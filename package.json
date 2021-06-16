@@ -1,0 +1,23 @@
+{
+  "name": "node-red-roon",
+  "version": "1.0.0",
+  "main": "roon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jac459",
+  "license": "MIT",
+  "description": "node-red and roon extension in order to control your roon core from node red",
+  "dependencies": {
+    "node-roon-api": "github:roonlabs/node-roon-api",
+    "node-roon-api-status": "github:roonlabs/node-roon-api-status",
+    "node-roon-api-transport": "github:roonlabs/node-roon-api-transport",
+    "node-roon-api-browse": "github:roonlabs/node-roon-api-browse",
+    "node-roon-api-image": "github:roonlabs/node-roon-api-image"
+  },
+  "node-red": {
+    "nodes": {
+      "node-red-roon-discovery": "roon.js"
+    }
+  }
+}

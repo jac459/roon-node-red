@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    RED.nodes.registerType('roon-core',{
+        category: 'function',
+        color: '#999999',
+        defaults: {
+            name: {value:""}
+        },
+        inputLabels: "JSON input",
+        outputLabels: ["state","status","images","browse","queue"],
+        inputs:1,
+        outputs:5,
+        icon: "font-awesome/fa-play-circle-o",
+        palettelabel:"white",
+        label: function() {
+            return this.name||"roon-core";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="roon-core">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-command" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="roon-core">
+    <p>A node to control your roon core.</p>
+</script>
