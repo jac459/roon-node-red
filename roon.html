@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED.nodes.registerType('roon-core',{
         category: 'function',
-        color: '#999999',
+        color: '#FFFFFF',
         defaults: {
             name: {value:""}
         },
@@ -9,7 +9,7 @@
         outputLabels: ["state","status","images","browse","queue"],
         inputs:1,
         outputs:5,
-        icon: "font-awesome/fa-play-circle-o",
+        icon: "roon.png",
         palettelabel:"white",
         label: function() {
             return this.name||"roon-core";

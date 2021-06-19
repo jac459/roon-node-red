@@ -19,7 +19,7 @@ module.exports = function(RED) {
             display_version:     "0.9.2",
             publisher:           'jac459',
             email:               'jeanarnaudcourcier@gmail.com',
-            website:             'https://github.com/jac459/roon-extension-test',
+            website:             'https://github.com/jac459/roon-node-red',
             core_paired: function(core) {
                 let msg = {};
                 theCore = {'coreId':core.core_id, 'coreName':core.display_name, 'coreVersion':core.display_version}; 
@@ -27,17 +27,25 @@ module.exports = function(RED) {
                 image = core.services.RoonApiImage;
                 browse = core.services.RoonApiBrowse;
                 let queueSubscribed = false;
+                let queues = [];
+
                 transport.subscribe_zones(function() {
                     transport.get_zones(function(cmd, data) {
                         theCore.zones = data.zones;
                         theCore.cmd = cmd;
                         msg.payload = theCore;
+
                         node.send([msg]);
                        if (!queueSubscribed) {
                             theCore.zones.forEach( (zone) => {
-                                 transport.subscribe_queue(zone, 256, (response, message) => {
-                                    msg.payload = {'zoneId': zone.zone_id, "event": response, "queue":message};
-                                    node.send([null,null,null,null,msg]);
+                                    transport.subscribe_queue(zone, 256, (response, message) => {
+                                    let i = queues.findIndex((queue) => { return queue.zoneId == zone.zone_id });
+                                    if (i < 0) {
+                                        queues.push({'zoneId': zone.zone_id, "queue":message});
+                                    }
+                                    else {
+                                        queues[i] = {'zoneId': zone.zone_id, "queue":message};
+                                    }
                                 })
                             });
                             queueSubscribed = true;
@@ -57,19 +65,25 @@ module.exports = function(RED) {
                     else if (msg.payload.transport) {
                         if (msg.payload.transport.control) {
                             transport.control(msg.payload.transport.zone, msg.payload.transport.control, (res) => {
-                                msg.payload = "Communicated " + msg.payload.transport.control + " to your roon core successfully.";
+                                msg.payload = {"Transport":msg.payload.transport.control};
                                 node.send([null, msg]);
                             })
                         };
                         if (msg.payload.transport.volume) {
                             transport.change_volume(msg.payload.transport.output, 'absolute', msg.payload.transport.volume, (res) => {
-                                msg.payload = "Output: " + msg.payload.transport.output.display_name + " - Changed volume to " + msg.payload.transport.volume;
+                                msg.payload = {"Volume":{"Output":msg.payload.transport.output.display_name, "Level":msg.payload.transport.volume}};
                                 node.send([null, msg])
                             })
                         }; 
                         if (msg.payload.transport.seek) {
                             transport.seek(msg.payload.transport.zone, 'absolute', msg.payload.transport.seek, (res) => {
-                                msg.payload = "Seek successfull";
+                                msg.payload = {"Seek":msg.payload.transport.seek};
+                                node.send([null, msg])
+                            })
+                        };
+                        if (msg.payload.transport.playQueue) {
+                            transport.play_from_here(msg.payload.transport.zone, msg.payload.transport.queueId, (res) => {
+                                msg.payload = {"PlayQueue":{"Zone":msg.payload.transport.zone, "QueueId":msg.payload.transport.queueId}};
                                 node.send([null, msg])
                             })
                         } 
@@ -81,7 +95,7 @@ module.exports = function(RED) {
                                 node.send([null, null, msg])
                             }
                             else {
-                                msg.payload = err;
+                                msg.payload = {"Error":err};
                                 node.send([null, msg])
                             }
                         });
@@ -97,16 +111,22 @@ module.exports = function(RED) {
                                     node.send([null, null, null, msg])
                                 }
                                 else {
-                                    msg.payload = err;
+                                    msg.payload = {"Error":err};
                                     node.send([null, msg])
-                                }
+                                    }
                             });
                         })
                     } 
-                    else {
-                        msg.payload = "Invalid input";
-                        node.send([null, msg])   
+                    else if (msg.payload.queue) {
+                        let queueReq = JSON.parse(msg.payload.queue);
+                        //msg.payload = queues;
+                        msg.payload = queues.find((queue) => { return queueReq.zoneId == queue.zoneId});
+                        node.send([null, null, null, null, msg])   
                     } 
+                    else {
+                        msg.payload = {"Error":"Invalid Input"};
+                        node.send([null, msg])
+           } 
                 });
              },
             core_unpaired: function() {
