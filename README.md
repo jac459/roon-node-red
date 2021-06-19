@@ -17,11 +17,11 @@ generally it is something like http://192.168.50.115:1880/ ==> you need to repla
 #### 2.3 copy paste this into the filename: https://raw.githubusercontent.com/jac459/roon-node-red/main/roon-flow.json
 #### 2.4 Click import and drag and drop the schema somewhere in the page (make it looks good).
 #### 2.5 Click Deploy
-### Now we need to tell roon we have an extension
-#### Open your roon UI.
-#### Go to settings
-#### Choose Extensions
-#### You will see the roon-core and will just have to click Enable.
+### 3 Now we need to tell roon we have an extension
+#### 3.1 Open your roon UI.
+#### 3.2 Go to settings
+#### 3.3 Choose Extensions
+#### 3.4 You will see the roon-core and will just have to click Enable.
 Congratulation, you are done.
 
 
