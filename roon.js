@@ -15,8 +15,8 @@ module.exports = function(RED) {
         var browse;
         var roon = new RoonApi({
             extension_id:        'com.jac459.nodeRedRoon',
-            display_name:        "node-red roon extension",
-            display_version:     "0.9.2",
+            display_name:        "Roon Core",
+            display_version:     "0.9.4",
             publisher:           'jac459',
             email:               'jeanarnaudcourcier@gmail.com',
             website:             'https://github.com/jac459/roon-node-red',

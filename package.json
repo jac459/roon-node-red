@@ -1,6 +1,6 @@
 {
   "name": "roon-core",
-  "version": "0.9.2",
+  "version": "0.9.4",
   "main": "roon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,6 +15,10 @@
     "node-roon-api-browse": "github:roonlabs/node-roon-api-browse",
     "node-roon-api-image": "github:roonlabs/node-roon-api-image"
   },
+  "keywords": [
+    "node-red",
+    "roon"
+  ],
   "node-red": {
     "nodes": {
       "node-red-roon-discovery": "roon.js"
