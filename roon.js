@@ -71,7 +71,7 @@ module.exports = function(RED) {
                         };
                         if (msg.payload.transport.volume) {
                             transport.change_volume(msg.payload.transport.output, 'absolute', msg.payload.transport.volume, (res) => {
-                                msg.payload = {"Volume":{"Output":msg.payload.transport.output.display_name, "Level":msg.payload.transport.volume}};
+                                msg.payload = {"Volume":{"Output":msg.payload.transport.output, "Level":msg.payload.transport.volume}};
                                 node.send([null, msg])
                             })
                         }; 

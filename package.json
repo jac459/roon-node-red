@@ -1,6 +1,6 @@
 {
   "name": "roon-core",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "main": "roon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
